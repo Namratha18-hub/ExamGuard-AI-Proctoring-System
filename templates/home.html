@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+
+{% block title %}ExamGuard | Home{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <h1>
+                    Secure Online Examination
+                    <span class="text-warning">Monitoring</span>
+                </h1>
+
+                <p>
+                     ExamGuard is an AI-powered online examination platform designed to
+    ensure secure candidate authentication, intelligent identity verification,
+    automated session lifecycle management, and real-time monitoring to
+    maintain academic integrity throughout the examination process.
+</p>
+                </p>
+
+                <div class="mt-4">
+
+                    <a href="/register" class="btn btn-primary-custom me-3">
+                        <i class="bi bi-person-plus-fill"></i>
+                        Register
+                    </a>
+
+                    <a href="/login" class="btn btn-outline-custom">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Login
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 text-center">
+
+                <img
+              src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1000"
+                class="img-fluid rounded-4 shadow-lg"
+                alt="Students"/>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+
+<section class="py-5">
+
+<div class="container">
+
+<h2 class="section-title">
+
+Features
+
+</h2>
+
+<div class="row g-4">
+
+<div class="col-md-4">
+
+<div class="feature-card text-center">
+
+<i class="bi bi-person-vcard-fill"></i>
+
+<h4>Candidate Registration</h4>
+
+<p>
+
+Quick and secure registration with
+automatic Application ID generation.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="feature-card text-center">
+
+<i class="bi bi-camera-fill"></i>
+
+<h4>OpenCV Verification</h4>
+
+<p>
+
+Capture candidate photograph
+during registration.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="feature-card text-center">
+
+<i class="bi bi-shield-lock-fill"></i>
+
+<h4>Secure Login</h4>
+
+<p>
+
+Protected authentication using
+SQLite database.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="feature-card text-center">
+
+<i class="bi bi-play-circle-fill"></i>
+
+<h4>Start Exam</h4>
+
+<p>
+
+Candidate can securely start
+the examination session.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="feature-card text-center">
+
+<i class="bi bi-pause-circle-fill"></i>
+
+<h4>Pause / Resume</h4>
+
+<p>
+
+Manage examination lifecycle
+without losing data.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="feature-card text-center">
+
+<i class="bi bi-database-fill"></i>
+
+<h4>SQLite Database</h4>
+
+<p>
+
+Store registration,
+authentication and session logs.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Workflow -->
+
+<section class="py-5 bg-light">
+
+<div class="container">
+
+<h2 class="section-title">
+
+How It Works
+
+</h2>
+
+<div class="row text-center">
+
+<div class="col-md-3">
+
+<h1>1️⃣</h1>
+
+<h5>Register</h5>
+
+<p>Create your candidate profile.</p>
+
+</div>
+
+<div class="col-md-3">
+
+<h1>2️⃣</h1>
+
+<h5>Capture Photo</h5>
+
+<p>Verify identity using OpenCV.</p>
+
+</div>
+
+<div class="col-md-3">
+
+<h1>3️⃣</h1>
+
+<h5>Login</h5>
+
+<p>Authenticate securely.</p>
+
+</div>
+
+<div class="col-md-3">
+
+<h1>4️⃣</h1>
+
+<h5>Start Exam</h5>
+
+<p>Begin your online examination.</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Technologies -->
+
+<section class="py-5">
+
+<div class="container">
+
+<h2 class="section-title">
+
+Technology Stack
+
+</h2>
+
+<div class="row text-center">
+
+<div class="col">
+
+<i class="bi bi-filetype-py display-3 text-primary"></i>
+
+<h5>Python</h5>
+
+</div>
+
+<div class="col">
+
+<i class="bi bi-bootstrap-fill display-3 text-primary"></i>
+
+<h5>Bootstrap</h5>
+
+</div>
+
+<div class="col">
+
+<i class="bi bi-database-fill display-3 text-primary"></i>
+
+<h5>SQLite</h5>
+
+</div>
+
+<div class="col">
+
+<i class="bi bi-camera-video-fill display-3 text-primary"></i>
+
+<h5>OpenCV</h5>
+
+</div>
+
+<div class="col">
+
+<i class="bi bi-cpu-fill display-3 text-primary"></i>
+
+<h5>Faker</h5>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+{% endblock %}

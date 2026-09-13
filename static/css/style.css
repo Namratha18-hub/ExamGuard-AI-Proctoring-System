@@ -1,0 +1,249 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:#F8FAFC;
+
+color:#0F172A;
+
+}
+
+.custom-navbar{
+
+background:rgba(15,23,42,.85);
+
+backdrop-filter:blur(10px);
+
+}
+
+/* ==========================================================
+   NAVBAR CLEARANCE (bug fix)
+   ==========================================================
+   .custom-navbar above is `fixed-top` (see base.html), which takes
+   it out of normal document flow -- so page content underneath it
+   renders partly hidden behind it unless something pushes content
+   down by the navbar's height. Previously only .hero (the home page)
+   had that compensation (padding-top:90px, further down in this
+   file), so every OTHER page (exam, dashboard, my-scores, profile,
+   settings, instructions, etc.) had its top content -- e.g. the exam
+   page's title/timer -- rendered partly underneath the navbar.
+
+   Fix: apply the same 90px clearance to <main> globally (base.html
+   wraps every page's {% block content %} in <main>), then cancel it
+   back out on .hero specifically with an equal negative margin-top,
+   so the home page -- which was already correct -- renders exactly
+   as it did before this change. */
+main{
+
+padding-top:90px;
+
+}
+/* ========================================================== */
+
+.navbar-brand{
+
+font-size:28px;
+
+font-weight:700;
+
+color:white !important;
+
+}
+
+.nav-link{
+
+color:white !important;
+
+margin-left:20px;
+
+transition:.3s;
+
+}
+
+.nav-link:hover{
+
+color:#38BDF8 !important;
+
+}
+
+.btn-primary-custom{
+
+background:#2563EB;
+
+border:none;
+
+padding:12px 28px;
+
+border-radius:12px;
+
+color:white;
+
+font-weight:600;
+
+transition:.3s;
+
+}
+
+.btn-primary-custom:hover{
+
+background:#1D4ED8;
+
+transform:translateY(-3px);
+
+}
+
+.btn-outline-custom{
+
+border:2px solid white;
+
+color:white;
+
+padding:12px 28px;
+
+border-radius:12px;
+
+transition:.3s;
+
+}
+
+.btn-outline-custom:hover{
+
+background:white;
+
+color:#2563EB;
+
+}
+
+.hero{
+
+/* Cancels out the new main{padding-top:90px} above -- .hero already
+   has its own padding-top:90px below for the SAME purpose (clearing
+   the fixed navbar), so without this it would end up pushed down by
+   90px twice. Net effect: home page renders exactly as it did
+   before the navbar-clearance fix. */
+margin-top:-90px;
+
+min-height:100vh;
+
+display:flex;
+
+align-items:center;
+
+background:linear-gradient(135deg,#2563EB,#0EA5E9);
+
+color:white;
+
+padding-top:90px;
+
+}
+
+.hero h1{
+
+font-size:60px;
+
+font-weight:700;
+
+}
+
+.hero p{
+
+font-size:20px;
+
+margin-top:20px;
+
+margin-bottom:35px;
+
+}
+
+.hero img{
+
+width:100%;
+
+animation:float 4s infinite;
+
+}
+
+@keyframes float{
+
+0%{transform:translateY(0px);}
+
+50%{transform:translateY(-15px);}
+
+100%{transform:translateY(0px);}
+
+}
+
+.feature-card{
+
+background:white;
+
+border-radius:18px;
+
+padding:35px;
+
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+transition:.3s;
+
+height:100%;
+
+}
+
+.feature-card:hover{
+
+transform:translateY(-10px);
+
+}
+
+.feature-card i{
+
+font-size:45px;
+
+color:#2563EB;
+
+margin-bottom:15px;
+
+}
+
+.section-title{
+
+text-align:center;
+
+margin-bottom:60px;
+
+font-weight:700;
+
+}
+
+footer{
+
+background:#0F172A;
+
+color:white;
+
+padding:50px 0;
+
+margin-top:80px;
+
+}
+
+@media(max-width:768px){
+
+.hero h1{
+
+font-size:40px;
+
+}
+
+.hero{
+
+text-align:center;
+
+}
+
+}

@@ -1,0 +1,289 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Dashboard | ExamGuard AI
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/dashboard.css') }}">
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/integrity_dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard">
+
+    <div class="topbar">
+
+        <div class="brand">
+            <h1>ExamGuard AI</h1>
+            <p>Secure AI Examination Portal</p>
+        </div>
+
+        <div class="profile">
+            <h3>Welcome {{ candidate[0] }} 👋</h3>
+
+            <span class="verified">
+                Face Verified ✅
+            </span>
+        </div>
+
+    </div>
+
+    <div id="info-cards" class="info-cards">
+
+    <!-- Last Exam -->
+    <div class="card">
+        <div class="card-icon"><i class="bi bi-journal-check"></i></div>
+        <h3>Last Exam</h3>
+
+        {% if last_exam %}
+            <p class="exam-result-message">
+                {{ last_exam.name }} completed &mdash; Score: {{ last_exam.marks }}/{{ last_exam.total }}
+            </p>
+        {% else %}
+            <p class="exam-result-message">
+                No exams completed yet.
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- Exams Remaining -->
+    <div class="card">
+        <div class="card-icon"><i class="bi bi-list-check"></i></div>
+        <h3>Exams Remaining</h3>
+        <p class="card-number">{{ remaining }}</p>
+    </div>
+
+    <!-- Exams Completed -->
+    <div class="card">
+        <div class="card-icon"><i class="bi bi-patch-check-fill"></i></div>
+        <h3>Exams Completed</h3>
+        <p class="card-number">{{ completed }}</p>
+    </div>
+
+    <!-- Average Score -->
+    <div class="card">
+        <div class="card-icon"><i class="bi bi-graph-up-arrow"></i></div>
+        <h3>Average Score</h3>
+
+        {% if average_score is not none %}
+            <p class="card-number">{{ average_score }}%</p>
+        {% else %}
+            <p class="card-number">No Data Yet</p>
+        {% endif %}
+    </div>
+
+</div>
+
+    <!-- ---------------- EXAM INTEGRITY (real data, live) ---------------- -->
+    <h2 class="heading">
+        Exam Integrity
+    </h2>
+
+    {% if integrity_setup_error %}
+
+        <div class="setup-error">
+            <h3><i class="bi bi-exclamation-triangle-fill"></i> Setup incomplete</h3>
+            <p>
+                Exam Integrity needs a one-time database migration that
+                hasn't been run against this database yet.
+            </p>
+            <p>From the project folder, run:</p>
+            <pre>python update_database_part13.py</pre>
+            <p>Then reload this page.</p>
+        </div>
+
+    {% elif not integrity or integrity.integrity_score is none %}
+
+        <div id="integrity-cards" class="info-cards">
+            <div class="card">
+                <div class="card-icon"><i class="bi bi-shield-check"></i></div>
+                <h3>Exam Integrity</h3>
+                <p class="exam-result-message">
+                    No integrity data yet. Complete an exam to see your integrity score.
+                </p>
+            </div>
+        </div>
+
+    {% else %}
+
+        <div id="integrity-cards" class="info-cards">
+
+            <div class="card">
+                <div class="card-icon"><i class="bi bi-shield-check"></i></div>
+                <h3>Integrity Score</h3>
+                <p class="card-number">{{ integrity.integrity_score }}</p>
+                <span class="risk-badge risk-{{ integrity.risk_label|lower }}">
+                    {{ integrity.risk_label }} risk
+                </span>
+            </div>
+
+            <div class="card">
+                <div class="card-icon"><i class="bi bi-camera-video-fill"></i></div>
+                <h3>Face Presence</h3>
+                {% if integrity.face_presence_ratio is not none %}
+                    <p class="card-number">{{ (integrity.face_presence_ratio * 100) | round(1) }}%</p>
+                {% else %}
+                    <p class="card-number">N/A</p>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <div class="card-icon"><i class="bi bi-list-check"></i></div>
+                <h3>Total Events</h3>
+                <p class="card-number">{{ integrity.total_events }}</p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon"><i class="bi bi-dash-circle"></i></div>
+                <h3>Marks Deducted</h3>
+                <p class="card-number">{{ integrity.deducted_marks }}</p>
+            </div>
+
+        </div>
+
+        <!-- ---- event category breakdown (real event_logs counts) ---- -->
+        <div class="event-breakdown">
+            <h3 style="margin:0;color:#2563eb;">Event Breakdown &mdash; {{ integrity.course or "Latest Exam" }}</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event Category</th>
+                        <th style="text-align:right;">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for label, count in integrity.event_category_counts.items() %}
+                    <tr {% if count > 0 %}class="has-events"{% endif %}>
+                        <td>{{ label }}</td>
+                        <td class="count-cell">{{ count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% if integrity.breached_rules %}
+            <p style="margin-top:14px;font-size:13px;color:#b91c1c;">
+                Breached thresholds: {{ integrity.breached_rules | join(', ') }}
+            </p>
+            {% endif %}
+        </div>
+
+        {% if integrity.cluster_message %}
+            <p class="cluster-message">{{ integrity.cluster_message }}</p>
+        {% endif %}
+
+        <!-- ---- dynamic graphs, rebuilt fresh from the DB on every load ---- -->
+        <div class="chart-card">
+            <h3>Integrity Score Gauge</h3>
+            <img src="data:image/png;base64,{{ integrity.score_gauge_image_base64 }}"
+                 alt="Integrity score gauge for the latest exam">
+        </div>
+
+        <div class="chart-card">
+            <h3>Event Frequency (this exam)</h3>
+            {% if integrity.event_bar_image_base64 %}
+                <img src="data:image/png;base64,{{ integrity.event_bar_image_base64 }}"
+                     alt="Event frequency bar chart for the latest exam">
+            {% else %}
+                <p class="chart-empty">No events were logged for this exam.</p>
+            {% endif %}
+        </div>
+
+        <div class="chart-card">
+            <h3>PCA + K-Means Cohort Cluster</h3>
+            {% if integrity.pca_cluster_image_base64 %}
+                <img src="data:image/png;base64,{{ integrity.pca_cluster_image_base64 }}"
+                     alt="PCA cluster scatter plot with this exam highlighted">
+                {% if integrity.cluster_name %}
+                <p style="text-align:center;margin-top:10px;font-weight:600;color:#0f172a;">
+                    Behaviour cluster: {{ integrity.cluster_name }}
+                </p>
+                {% endif %}
+            {% else %}
+                <p class="chart-empty">
+                    Not enough completed exams across the cohort yet to cluster.
+                </p>
+            {% endif %}
+        </div>
+
+    {% endif %}
+
+    <h2 class="heading">
+        Available Exams
+    </h2>
+
+    <div id="courses" class="courses">
+
+        <div class="course-card">
+            <h3>Java Programming</h3>
+            <p>Duration : 60 Minutes</p>
+            <a href="/instructions/java" class="start-btn">
+                Start Exam
+            </a>
+        </div>
+
+        <div class="course-card">
+            <h3>Python Programming</h3>
+            <p>Duration : 60 Minutes</p>
+            <a href="/instructions/python" class="start-btn">
+                Start Exam
+            </a>
+        </div>
+
+        <div class="course-card">
+            <h3>Data Structures</h3>
+            <p>Duration : 90 Minutes</p>
+            <a href="/instructions/dsa" class="start-btn">
+                Start Exam
+            </a>
+        </div>
+
+        <div class="course-card">
+            <h3>DBMS</h3>
+            <p>Duration : 60 Minutes</p>
+            <a href="/instructions/dbms" class="start-btn">
+                Start Exam
+            </a>
+        </div>
+
+        <div class="course-card">
+            <h3>Operating Systems</h3>
+            <p>Duration : 60 Minutes</p>
+            <a href="/instructions/os" class="start-btn">
+                Start Exam
+            </a>
+        </div>
+
+        <div class="course-card">
+            <h3>Computer Networks</h3>
+            <p>Duration : 60 Minutes</p>
+            <a href="/instructions/cn" class="start-btn">
+                Start Exam
+            </a>
+        </div>
+
+        <div class="course-card">
+            <h3>Artificial Intelligence</h3>
+            <p>Duration : 90 Minutes</p>
+            <a href="/instructions/ai" class="start-btn">
+                Start Exam
+            </a>
+        </div>
+
+        <div class="course-card">
+            <h3>Machine Learning</h3>
+            <p>Duration : 90 Minutes</p>
+            <a href="/instructions/ml" class="start-btn">
+                Start Exam
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

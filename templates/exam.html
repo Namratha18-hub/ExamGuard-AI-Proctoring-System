@@ -1,0 +1,2230 @@
+{% extends "base.html" %}
+
+{% block title %}
+Exam
+{% endblock %}
+
+
+{% block styles %}
+
+<style>
+
+/* =========================================================
+   EXAM PAGE
+   ========================================================= */
+
+.exam-page {
+    padding: 24px 0 40px;
+}
+
+.exam-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 350px;
+    gap: 22px;
+    align-items: start;
+}
+
+
+/* =========================================================
+   EXAM HEADER
+   ========================================================= */
+
+.exam-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+}
+
+.exam-header {
+    padding: 22px 24px;
+    border-bottom: 1px solid #e2e8f0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.exam-heading small {
+    display: block;
+
+    color: #64748b;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    margin-bottom: 5px;
+}
+
+.exam-heading h2 {
+    margin: 0;
+
+    color: #2563eb;
+
+    font-size: 25px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+.timer-badge {
+    min-width: 125px;
+
+    padding: 10px 16px;
+
+    border-radius: 999px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    background: #eff6ff;
+
+    border: 1px solid #bfdbfe;
+
+    color: #1d4ed8;
+
+    font-weight: 800;
+
+    font-size: 16px;
+
+    font-variant-numeric: tabular-nums;
+
+    white-space: nowrap;
+
+    transition: 0.2s ease;
+}
+
+.timer-badge.timer-low {
+    background: #fef2f2;
+
+    border-color: #fecaca;
+
+    color: #dc2626;
+
+    animation: timerPulse 1.3s infinite;
+}
+
+@keyframes timerPulse {
+
+    0% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.3);
+    }
+
+    70% {
+        box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+    }
+}
+
+
+/* =========================================================
+   QUESTION AREA
+   ========================================================= */
+
+.question-area {
+    padding: 24px;
+}
+
+.question-progress {
+    color: #475569;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    margin-bottom: 18px;
+}
+
+.question-box {
+    min-height: 350px;
+}
+
+.question-box h5 {
+    margin-bottom: 16px;
+
+    color: #0f172a;
+
+    font-size: 18px;
+}
+
+.question-text {
+    color: #334155;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+
+    margin-bottom: 24px;
+}
+
+.option-row {
+    padding: 12px 14px;
+
+    margin-bottom: 10px;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 10px;
+
+    transition: 0.15s ease;
+}
+
+.option-row:hover {
+    background: #f8fafc;
+
+    border-color: #93c5fd;
+}
+
+.option-row .form-check {
+    margin: 0;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.exam-actions {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-top: 25px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #e2e8f0;
+}
+
+.exam-actions .right-actions {
+    display: flex;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   PROCTORING SIDEBAR
+   ========================================================= */
+
+.proctor-card {
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 16px;
+
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.09);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   PROCTOR HEADER
+   ========================================================= */
+
+.proctor-header {
+    padding: 17px 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.proctor-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #0f172a;
+
+    font-weight: 800;
+
+    font-size: 15px;
+}
+
+.live-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: #16a34a;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.06em;
+}
+
+.live-dot {
+    width: 8px;
+
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #16a34a;
+
+    animation: liveBlink 1.5s infinite;
+}
+
+@keyframes liveBlink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+
+/* =========================================================
+   CAMERA
+   ========================================================= */
+
+.camera-container {
+    position: relative;
+
+    margin: 14px;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: #0f172a;
+
+    border: 1px solid #cbd5e1;
+
+    aspect-ratio: 4 / 3;
+}
+
+.camera-container img {
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   AI STATUS
+   ========================================================= */
+
+.ai-status {
+    margin: 0 14px 14px;
+
+    padding: 11px 12px;
+
+    border-radius: 10px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+}
+
+.ai-status-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    color: #334155;
+}
+
+.ai-status-indicator {
+    width: 8px;
+
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+}
+
+.ai-status-text {
+    flex: 1;
+}
+
+.ai-status-subtext {
+    margin-top: 4px;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   WARNING / MARK CARDS
+   ========================================================= */
+
+.monitor-stats {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+    margin: 0 14px 14px;
+}
+
+.stat-card {
+    padding: 14px 10px;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    border: 1px solid;
+}
+
+.stat-card.warning {
+    background: #fff7f7;
+
+    border-color: #fecaca;
+
+    color: #b91c1c;
+}
+
+.stat-card.marks {
+    background: #fffbeb;
+
+    border-color: #fde68a;
+
+    color: #92400e;
+}
+
+.stat-label {
+    display: block;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.07em;
+
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    display: block;
+
+    font-size: 24px;
+
+    line-height: 1;
+
+    font-weight: 900;
+
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================================
+   PROCTOR INFORMATION
+   ========================================================= */
+
+.proctor-note {
+    margin: 0 14px 15px;
+
+    padding: 10px 11px;
+
+    background: #f8fafc;
+
+    border-radius: 9px;
+
+    color: #64748b;
+
+    font-size: 11px;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   QUESTION PALETTE
+   ========================================================= */
+
+.palette-section {
+    border-top: 1px solid #e2e8f0;
+
+    padding: 16px 14px 18px;
+}
+
+.palette-title {
+    text-align: center;
+
+    margin-bottom: 10px;
+
+    color: #0f172a;
+
+    font-size: 15px;
+
+    font-weight: 800;
+}
+
+.palette-legend {
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 12px;
+
+    color: #64748b;
+
+    font-size: 10px;
+}
+
+.legend-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+}
+
+.legend-dot {
+    width: 7px;
+
+    height: 7px;
+
+    border-radius: 2px;
+}
+
+.legend-none {
+    background: #ffffff;
+
+    border: 1px solid #cbd5e1;
+}
+
+.legend-visited {
+    background: #3b82f6;
+}
+
+.legend-skipped {
+    background: #facc15;
+}
+
+.legend-answered {
+    background: #16a34a;
+}
+
+.palette-grid {
+    display: grid;
+
+    grid-template-columns: repeat(8, 1fr);
+
+    gap: 7px;
+}
+
+.palette-btn {
+    width: 100%;
+
+    aspect-ratio: 1;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #0f172a;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.15s ease;
+}
+
+.palette-btn:hover {
+    border-color: #2563eb;
+
+    transform: translateY(-1px);
+}
+
+.palette-btn.visited {
+    background: #3b82f6;
+
+    border-color: #3b82f6;
+
+    color: #ffffff;
+}
+
+.palette-btn.skipped {
+    background: #facc15;
+
+    border-color: #eab308;
+
+    color: #713f12;
+}
+
+.palette-btn.answered {
+    background: #16a34a;
+
+    border-color: #16a34a;
+
+    color: #ffffff;
+}
+
+.palette-btn.current {
+    box-shadow: 0 0 0 3px #0f172a;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .exam-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .proctor-card {
+        max-width: 520px;
+
+        margin: 0 auto;
+
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .exam-page {
+        padding-top: 12px;
+    }
+
+    .exam-header {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .timer-badge {
+        width: 100%;
+    }
+
+    .question-area {
+        padding: 18px;
+    }
+
+    .exam-actions {
+        flex-direction: column;
+    }
+
+    .exam-actions button {
+        width: 100%;
+    }
+
+    .exam-actions .right-actions {
+        width: 100%;
+    }
+
+    .exam-actions .right-actions button {
+        flex: 1;
+    }
+
+    .palette-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid exam-page">
+
+    <div class="exam-layout">
+
+        <!-- =================================================
+             LEFT: EXAM
+             ================================================= -->
+
+        <main class="exam-card">
+
+            <div class="exam-header">
+
+                <div class="exam-heading">
+
+                    <small>
+                        Proctored Examination
+                    </small>
+
+                    <h2>
+                        {{ course|upper }} Examination
+                    </h2>
+
+                </div>
+
+
+                <div
+                    class="timer-badge"
+                    id="timerBadge"
+                >
+
+                    <span id="timerIcon">
+                        ⏱
+                    </span>
+
+                    <span id="timer">
+                        30:00
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="question-area">
+
+                <div
+                    class="question-progress"
+                    id="questionNumber"
+                >
+                    Question 1 of {{ questions|length }}
+                </div>
+
+
+                <form
+                    id="examForm"
+                    method="POST"
+                    action="{{ url_for('submit_exam') }}"
+                >
+
+                    <input
+                        type="hidden"
+                        name="course"
+                        value="{{ course }}"
+                    >
+
+
+                    {% for q in questions %}
+
+                    <div
+                        class="question-box"
+                        id="question{{ loop.index }}"
+                        {% if loop.index != 1 %}
+                        style="display:none;"
+                        {% endif %}
+                    >
+
+                        <h5>
+                            Question {{ loop.index }}
+                        </h5>
+
+
+                        <div class="question-text">
+                            {{ q[2] }}
+                        </div>
+
+
+                        <div class="option-row">
+
+                            <div class="form-check">
+
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="q{{ q[0] }}"
+                                    value="{{ q[3] }}"
+                                    id="q{{ q[0] }}a"
+                                >
+
+                                <label
+                                    class="form-check-label"
+                                    for="q{{ q[0] }}a"
+                                >
+                                    {{ q[3] }}
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="option-row">
+
+                            <div class="form-check">
+
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="q{{ q[0] }}"
+                                    value="{{ q[4] }}"
+                                    id="q{{ q[0] }}b"
+                                >
+
+                                <label
+                                    class="form-check-label"
+                                    for="q{{ q[0] }}b"
+                                >
+                                    {{ q[4] }}
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="option-row">
+
+                            <div class="form-check">
+
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="q{{ q[0] }}"
+                                    value="{{ q[5] }}"
+                                    id="q{{ q[0] }}c"
+                                >
+
+                                <label
+                                    class="form-check-label"
+                                    for="q{{ q[0] }}c"
+                                >
+                                    {{ q[5] }}
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="option-row">
+
+                            <div class="form-check">
+
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="q{{ q[0] }}"
+                                    value="{{ q[6] }}"
+                                    id="q{{ q[0] }}d"
+                                >
+
+                                <label
+                                    class="form-check-label"
+                                    for="q{{ q[0] }}d"
+                                >
+                                    {{ q[6] }}
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+
+                    <div class="exam-actions">
+
+                        <button
+                            type="button"
+                            id="prevBtn"
+                            class="btn btn-secondary"
+                        >
+                            Previous
+                        </button>
+
+
+                        <div class="right-actions">
+
+                            <button
+                                type="button"
+                                id="nextBtn"
+                                class="btn btn-primary"
+                            >
+                                Next
+                            </button>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-success"
+                            >
+                                Submit Exam
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </main>
+
+
+        <!-- =================================================
+             RIGHT: AI PROCTORING
+             ================================================= -->
+
+        <aside class="proctor-card">
+
+            <div class="proctor-header">
+
+                <div class="proctor-title">
+
+                    <span>
+                        📷
+                    </span>
+
+                    <span>
+                        AI Proctoring
+                    </span>
+
+                </div>
+
+
+                <div class="live-status">
+
+                    <span class="live-dot"></span>
+
+                    LIVE
+
+                </div>
+
+            </div>
+
+
+            <!-- CAMERA -->
+
+            <div class="camera-container">
+
+                <img
+                    id="examCameraFeed"
+                    src="{{ url_for('video_feed') }}"
+                    alt="Live AI Proctoring Camera"
+                >
+
+            </div>
+
+            <script>
+            // The camera stream can drop (e.g. another page/tab that
+            // shares the same webcam released it, a network hiccup,
+            // etc.). A plain <img> never retries on its own once its
+            // stream ends, so it would otherwise stay frozen/blank
+            // for the rest of the exam. This reconnects automatically.
+            (function () {
+
+                var feed = document.getElementById("examCameraFeed");
+
+                if (!feed) {
+                    return;
+                }
+
+                feed.addEventListener("error", function () {
+                    setTimeout(function () {
+                        feed.src = "{{ url_for('video_feed') }}?t=" + Date.now();
+                    }, 1000);
+                });
+
+            })();
+            </script>
+
+
+            <!-- CURRENT AI STATUS -->
+
+            <div class="ai-status">
+
+                <div class="ai-status-row">
+
+                    <span
+                        class="ai-status-indicator"
+                        id="aiStatusIndicator"
+                    ></span>
+
+                    <span
+                        class="ai-status-text"
+                        id="aiStatusText"
+                    >
+                        AI Monitoring Active
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="ai-status-subtext"
+                    id="aiStatusSubtext"
+                >
+                    Camera, face and suspicious-object monitoring is active.
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 WARNING + MARKS
+                 ONLY NUMERIC LOCATION OUTSIDE CAMERA
+                 ================================================= -->
+
+            <div class="monitor-stats">
+
+                <div class="stat-card warning">
+
+                    <span class="stat-label">
+                        Warnings
+                    </span>
+
+                    <span
+                        class="stat-value"
+                        id="warningCount"
+                    >
+                        0
+                    </span>
+
+                </div>
+
+
+                <div class="stat-card marks">
+
+                    <span class="stat-label">
+                        Marks Deducted
+                    </span>
+
+                    <span
+                        class="stat-value"
+                        id="deductedMarks"
+                    >
+                        0
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="proctor-note">
+
+                Stay centered in the camera frame.
+                Avoid looking away and keep unauthorized
+                objects away from the examination area.
+
+            </div>
+
+
+            <!-- =================================================
+                 QUESTION PALETTE
+                 ================================================= -->
+
+            <div class="palette-section">
+
+                <div class="palette-title">
+                    Question Palette
+                </div>
+
+
+                <div class="palette-legend">
+
+                    <span class="legend-item">
+                        <span class="legend-dot legend-none"></span>
+                        Not visited
+                    </span>
+
+                    <span class="legend-item">
+                        <span class="legend-dot legend-visited"></span>
+                        Visited
+                    </span>
+
+                    <span class="legend-item">
+                        <span class="legend-dot legend-skipped"></span>
+                        Skipped
+                    </span>
+
+                    <span class="legend-item">
+                        <span class="legend-dot legend-answered"></span>
+                        Answered
+                    </span>
+
+                </div>
+
+
+                <div class="palette-grid">
+
+                    {% for q in questions %}
+
+                    <button
+                        type="button"
+                        id="paletteBtn{{ loop.index }}"
+                        class="palette-btn"
+                        data-question="{{ loop.index }}"
+                    >
+                        {{ loop.index }}
+                    </button>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   BASIC EXAM REFERENCES
+   ========================================================= */
+
+let currentQuestion = 0;
+
+const totalQuestions =
+    document.querySelectorAll(
+        ".question-box"
+    ).length;
+
+const nextBtn =
+    document.getElementById(
+        "nextBtn"
+    );
+
+const prevBtn =
+    document.getElementById(
+        "prevBtn"
+    );
+
+const examForm =
+    document.getElementById(
+        "examForm"
+    );
+
+const timer =
+    document.getElementById(
+        "timer"
+    );
+
+const warningCount =
+    document.getElementById(
+        "warningCount"
+    );
+
+const deductedMarks =
+    document.getElementById(
+        "deductedMarks"
+    );
+
+const aiStatusText =
+    document.getElementById(
+        "aiStatusText"
+    );
+
+const aiStatusSubtext =
+    document.getElementById(
+        "aiStatusSubtext"
+    );
+
+const aiStatusIndicator =
+    document.getElementById(
+        "aiStatusIndicator"
+    );
+
+
+/* =========================================================
+   GUARDED SUBMIT
+   ========================================================= */
+
+let examSubmitted = false;
+
+
+function forceSubmitExam(message) {
+
+    if (examSubmitted) {
+        return;
+    }
+
+    examSubmitted = true;
+
+    if (message) {
+        alert(message);
+    }
+
+    examForm.submit();
+}
+
+
+/* =========================================================
+   QUESTION PALETTE
+   ========================================================= */
+
+function isAnswered(number) {
+
+    const question =
+        document.getElementById(
+            "question" + number
+        );
+
+    if (!question) {
+        return false;
+    }
+
+    return (
+        question.querySelector(
+            'input[type="radio"]:checked'
+        ) !== null
+    );
+}
+
+
+function setPaletteState(
+    number,
+    state
+) {
+
+    const button =
+        document.getElementById(
+            "paletteBtn" + number
+        );
+
+    if (!button) {
+        return;
+    }
+
+    if (
+        button.classList.contains(
+            "answered"
+        ) &&
+        state !== "answered"
+    ) {
+        return;
+    }
+
+    button.classList.remove(
+        "visited",
+        "skipped",
+        "answered"
+    );
+
+    if (state) {
+        button.classList.add(
+            state
+        );
+    }
+}
+
+
+function markCurrentQuestion(number) {
+
+    document
+        .querySelectorAll(
+            ".palette-btn.current"
+        )
+        .forEach(
+            function(button) {
+
+                button.classList.remove(
+                    "current"
+                );
+
+            }
+        );
+
+    const button =
+        document.getElementById(
+            "paletteBtn" + number
+        );
+
+    if (button) {
+
+        button.classList.add(
+            "current"
+        );
+    }
+}
+
+
+/* =========================================================
+   PALETTE BUTTON EVENTS
+   ========================================================= */
+
+document
+    .querySelectorAll(
+        ".palette-btn"
+    )
+    .forEach(
+        function(button) {
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    const number =
+                        Number(
+                            this.dataset.question
+                        );
+
+                    showQuestion(number);
+
+                }
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   RADIO ANSWER EVENT
+   ========================================================= */
+
+examForm.addEventListener(
+    "change",
+    function(event) {
+
+        if (
+            event.target.type !==
+            "radio"
+        ) {
+            return;
+        }
+
+        const questionBox =
+            event.target.closest(
+                ".question-box"
+            );
+
+        if (!questionBox) {
+            return;
+        }
+
+        const number =
+            parseInt(
+                questionBox.id
+                    .replace(
+                        "question",
+                        ""
+                    ),
+                10
+            );
+
+        if (!isNaN(number)) {
+
+            setPaletteState(
+                number,
+                "answered"
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   QUESTION HEADING
+   ========================================================= */
+
+function updateHeading() {
+
+    document.getElementById(
+        "questionNumber"
+    ).innerHTML =
+        "Question " +
+        currentQuestion +
+        " of " +
+        totalQuestions;
+}
+
+
+/* =========================================================
+   HIDE QUESTIONS
+   ========================================================= */
+
+function hideAllQuestions() {
+
+    for (
+        let i = 1;
+        i <= totalQuestions;
+        i++
+    ) {
+
+        const question =
+            document.getElementById(
+                "question" + i
+            );
+
+        if (question) {
+
+            question.style.display =
+                "none";
+
+        }
+    }
+}
+
+
+/* =========================================================
+   SHOW QUESTION
+   ========================================================= */
+
+function showQuestion(number) {
+
+    if (
+        number < 1 ||
+        number > totalQuestions
+    ) {
+        return;
+    }
+
+
+    if (
+        currentQuestion &&
+        currentQuestion !== number
+    ) {
+
+        if (
+            !isAnswered(
+                currentQuestion
+            )
+        ) {
+
+            setPaletteState(
+                currentQuestion,
+                "skipped"
+            );
+
+        }
+
+    }
+
+
+    hideAllQuestions();
+
+
+    currentQuestion = number;
+
+
+    const question =
+        document.getElementById(
+            "question" + number
+        );
+
+    if (question) {
+
+        question.style.display =
+            "block";
+
+    }
+
+
+    updateHeading();
+
+
+    if (!isAnswered(number)) {
+
+        setPaletteState(
+            number,
+            "visited"
+        );
+
+    }
+
+
+    markCurrentQuestion(number);
+}
+
+
+window.showQuestion =
+    showQuestion;
+
+
+/* =========================================================
+   NEXT
+   ========================================================= */
+
+nextBtn.addEventListener(
+    "click",
+    function() {
+
+        if (
+            currentQuestion <
+            totalQuestions
+        ) {
+
+            showQuestion(
+                currentQuestion + 1
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   PREVIOUS
+   ========================================================= */
+
+prevBtn.addEventListener(
+    "click",
+    function() {
+
+        if (
+            currentQuestion > 1
+        ) {
+
+            showQuestion(
+                currentQuestion - 1
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL QUESTION
+   ========================================================= */
+
+showQuestion(1);
+
+
+/* =========================================================
+   FULLSCREEN
+   ========================================================= */
+
+document.documentElement
+    .requestFullscreen()
+    .catch(
+        function() {}
+    );
+
+
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+
+        if (
+            document.fullscreenElement
+        ) {
+            return;
+        }
+
+
+        fetch(
+            "/update_warning",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    event_type:
+                        "fullscreen_exit"
+                })
+            }
+        )
+        .then(
+            response =>
+                response.json()
+        )
+        .then(
+            data => {
+
+                updateProctorCounters(
+                    data
+                );
+
+
+                if (
+                    data.terminated
+                ) {
+
+                    forceSubmitExam(
+                        "Too many violations. Exam terminated."
+                    );
+
+                    return;
+                }
+
+
+                updateAIStatus(
+                    "Fullscreen exited",
+                    "A fullscreen violation was recorded.",
+                    false
+                );
+
+            }
+        )
+        .catch(
+            function(error) {
+
+                console.error(
+                    "Fullscreen warning error:",
+                    error
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   TAB SWITCH
+   ========================================================= */
+
+let tabSwitchGraceTimeoutId =
+    null;
+
+
+document.addEventListener(
+    "visibilitychange",
+    function() {
+
+        if (
+            !document.hidden
+        ) {
+            if (
+                tabSwitchGraceTimeoutId
+            ) {
+
+                clearTimeout(
+                    tabSwitchGraceTimeoutId
+                );
+
+                tabSwitchGraceTimeoutId =
+                    null;
+            }
+
+            return;
+        }
+
+
+        fetch(
+            "/update_warning",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    event_type:
+                        "tab_switch"
+                })
+            }
+        )
+        .then(
+            response =>
+                response.json()
+        )
+        .then(
+            data => {
+
+                updateProctorCounters(
+                    data
+                );
+
+
+                if (
+                    data.terminated
+                ) {
+
+                    forceSubmitExam(
+                        "Multiple tab switches detected. Exam terminated."
+                    );
+
+                    return;
+                }
+
+
+                updateAIStatus(
+                    "Tab switch detected",
+                    "Return to the examination window.",
+                    false
+                );
+
+
+                alert(
+                    "Tab switching detected! Return within 1 minute or the exam will be terminated."
+                );
+
+
+                tabSwitchGraceTimeoutId =
+                    setTimeout(
+                        function() {
+
+                            if (
+                                !document.hidden
+                            ) {
+                                return;
+                            }
+
+
+                            fetch(
+                                "/update_warning",
+                                {
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body: JSON.stringify({
+                                        event_type:
+                                            "tab_switch_timeout"
+                                    })
+                                }
+                            )
+                            .then(
+                                response =>
+                                    response.json()
+                            )
+                            .then(
+                                timeoutData => {
+
+                                    updateProctorCounters(
+                                        timeoutData
+                                    );
+
+
+                                    if (
+                                        timeoutData.terminated
+                                    ) {
+
+                                        forceSubmitExam(
+                                            "Away from the exam tab for more than 1 minute. Exam terminated."
+                                        );
+
+                                    }
+
+                                }
+                            );
+
+                        },
+                        60000
+                    );
+
+            }
+        )
+        .catch(
+            function(error) {
+
+                console.error(
+                    "Tab switch error:",
+                    error
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   COPY / CUT / PASTE
+   ========================================================= */
+/* Blocks the default copy/cut/paste action (so copied exam
+   content or pasted-in text never actually reaches the
+   clipboard/answer field) and reports it through the same
+   /update_warning endpoint used by tab-switch and fullscreen
+   above, so it flows into the same unified warnings/marks/
+   termination logic -- no separate rule, no immediate
+   termination beyond what that shared logic already decides. */
+
+function reportCopyPasteViolation(sourceEvent) {
+
+    sourceEvent.preventDefault();
+
+    fetch(
+        "/update_warning",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type":
+                    "application/json"
+            },
+
+            body: JSON.stringify({
+                event_type:
+                    "copy_paste"
+            })
+        }
+    )
+    .then(
+        response =>
+            response.json()
+    )
+    .then(
+        data => {
+
+            updateProctorCounters(
+                data
+            );
+
+
+            if (
+                data.terminated
+            ) {
+
+                forceSubmitExam(
+                    "Too many violations. Exam terminated."
+                );
+
+                return;
+            }
+
+
+            updateAIStatus(
+                "Copy/paste blocked",
+                "Copying or pasting exam content is not allowed.",
+                false
+            );
+
+        }
+    )
+    .catch(
+        function(error) {
+
+            console.error(
+                "Copy/paste warning error:",
+                error
+            );
+
+        }
+    );
+
+}
+
+
+document.addEventListener(
+    "copy",
+    reportCopyPasteViolation
+);
+
+document.addEventListener(
+    "cut",
+    reportCopyPasteViolation
+);
+
+document.addEventListener(
+    "paste",
+    reportCopyPasteViolation
+);
+
+
+/* =========================================================
+   RIGHT CLICK
+   ========================================================= */
+/* Blocks the browser's default context menu and reports it
+   through the same /update_warning endpoint, same as above. */
+
+document.addEventListener(
+    "contextmenu",
+    function(event) {
+
+        event.preventDefault();
+
+        fetch(
+            "/update_warning",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    event_type:
+                        "right_click"
+                })
+            }
+        )
+        .then(
+            response =>
+                response.json()
+        )
+        .then(
+            data => {
+
+                updateProctorCounters(
+                    data
+                );
+
+
+                if (
+                    data.terminated
+                ) {
+
+                    forceSubmitExam(
+                        "Too many violations. Exam terminated."
+                    );
+
+                    return;
+                }
+
+
+                updateAIStatus(
+                    "Right-click blocked",
+                    "Right-clicking is not allowed during the exam.",
+                    false
+                );
+
+            }
+        )
+        .catch(
+            function(error) {
+
+                console.error(
+                    "Right-click warning error:",
+                    error
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   COUNTER UPDATE
+   ========================================================= */
+
+function updateProctorCounters(data) {
+
+    if (
+        data.warnings !== undefined
+    ) {
+
+        warningCount.textContent =
+            data.warnings;
+
+    }
+
+
+    if (
+        data.deducted !== undefined
+    ) {
+
+        deductedMarks.textContent =
+            data.deducted;
+
+    }
+
+
+    if (
+        data.terminated
+    ) {
+
+        updateAIStatus(
+            "Exam terminated",
+            "The maximum warning threshold has been reached.",
+            false
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AI STATUS
+   ========================================================= */
+
+function updateAIStatus(
+    title,
+    description,
+    active
+) {
+
+    aiStatusText.textContent =
+        title;
+
+    aiStatusSubtext.textContent =
+        description;
+
+    if (active) {
+
+        aiStatusIndicator.style.background =
+            "#22c55e";
+
+    } else {
+
+        aiStatusIndicator.style.background =
+            "#ef4444";
+
+    }
+
+}
+
+
+/* =========================================================
+   SESSION STATUS
+   =========================================================
+   
+   This is the ONLY client-side source used to display
+   camera-generated warning totals.
+
+   The browser does NOT increment warnings itself.
+
+   The server/database decides the actual values.
+   ========================================================= */
+
+let lastWarningCount =
+    Number(
+        warningCount.textContent || 0
+    );
+
+
+function pollSessionStatus() {
+
+    fetch(
+        "/session_status",
+        {
+            cache: "no-store"
+        }
+    )
+    .then(
+        response =>
+            response.json()
+    )
+    .then(
+        data => {
+
+            if (!data.success) {
+                return;
+            }
+
+
+            const currentWarnings =
+                Number(
+                    data.warnings || 0
+                );
+
+
+            updateProctorCounters(
+                data
+            );
+
+
+            if (
+                currentWarnings >
+                lastWarningCount
+            ) {
+
+                updateAIStatus(
+                    "Violation confirmed",
+                    "A confirmed proctoring event was recorded.",
+                    false
+                );
+
+            } else {
+
+                updateAIStatus(
+                    "AI Monitoring Active",
+                    "Camera, face and suspicious-object monitoring is active.",
+                    true
+                );
+
+            }
+
+
+            lastWarningCount =
+                currentWarnings;
+
+
+            if (
+                data.terminated
+            ) {
+
+                forceSubmitExam(
+                    "Too many violations. Exam terminated."
+                );
+
+            }
+
+        }
+    )
+    .catch(
+        function(error) {
+
+            console.error(
+                "Session status error:",
+                error
+            );
+
+        }
+    );
+
+}
+
+
+/* Immediate initial request */
+
+pollSessionStatus();
+
+
+/* Keep the UI synchronized */
+
+setInterval(
+    pollSessionStatus,
+    1000
+);
+
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+
+let totalTime =
+    30 * 60;
+
+
+const LOW_TIME_THRESHOLD =
+    5 * 60;
+
+
+const timerBadge =
+    document.getElementById(
+        "timerBadge"
+    );
+
+const timerIcon =
+    document.getElementById(
+        "timerIcon"
+    );
+
+
+const countdown =
+    setInterval(
+        function() {
+
+            const minutes =
+                Math.floor(
+                    totalTime / 60
+                );
+
+            const seconds =
+                totalTime % 60;
+
+
+            timer.textContent =
+                String(minutes)
+                    .padStart(2, "0")
+                +
+                ":"
+                +
+                String(seconds)
+                    .padStart(2, "0");
+
+
+            if (
+                totalTime <=
+                LOW_TIME_THRESHOLD
+                &&
+                totalTime > 0
+            ) {
+
+                timerBadge.classList.add(
+                    "timer-low"
+                );
+
+                timerIcon.textContent =
+                    "⚠";
+
+            }
+
+
+            if (
+                totalTime <= 0
+            ) {
+
+                clearInterval(
+                    countdown
+                );
+
+                forceSubmitExam(
+                    "Time completed. Exam submitted."
+                );
+
+                return;
+
+            }
+
+
+            totalTime--;
+
+        },
+        1000
+    );
+
+</script>
+
+{% endblock %}

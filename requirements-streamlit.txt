@@ -1,0 +1,50 @@
+# requirements-streamlit.txt
+#
+# Dependencies for streamlit_dashboard.py ONLY -- installed into a
+# SEPARATE virtual environment (e.g. "venv-dashboard"), never into the
+# main project venv.
+#
+# Why this file exists: mediapipe (used by utils/head_pose.py, part of
+# the live proctoring camera) requires protobuf==4.25.3, while
+# streamlit requires protobuf>=5.26.1. Those two constraints cannot
+# both be satisfied inside one interpreter's site-packages -- pip will
+# always resolve one and break the other. Since streamlit_dashboard.py
+# never imports face_detection.py, head_pose.py, or anything that
+# touches cv2/mediapipe/ultralytics/torch (verified by tracing every
+# import in its dependency chain: analytics.py -> detection_rules.py /
+# event_logger.py / scoring.py, and utils/report_agent.py ->
+# scoring.py), it doesn't need mediapipe at all -- so giving it its
+# own venv sidesteps the conflict entirely instead of gambling on a
+# single protobuf version that satisfies both packages.
+#
+# pandas / matplotlib / scikit-learn are pinned to the exact versions
+# already used (and tested against this project's actual code) in the
+# main venv's requirements.txt, so chart output and clustering results
+# match between the Flask app and this dashboard. protobuf is
+# deliberately left unpinned here -- with mediapipe absent from this
+# venv, there is nothing for it to conflict with, so pip is free to
+# resolve whatever version streamlit itself requires.
+#
+# Setup (run once, from the project root, in a NEW venv separate from
+# the existing one):
+#
+#     python -m venv venv-dashboard
+#     venv-dashboard\Scripts\activate          (Windows)
+#     source venv-dashboard/bin/activate       (macOS/Linux)
+#     pip install -r requirements-streamlit.txt
+#
+# Run (from that same venv, still in the project root so config.py
+# resolves database/examguard.db to the same file the Flask app uses):
+#
+#     streamlit run streamlit_dashboard.py
+#
+# The existing venv, app.py, and every proctoring/scoring/database
+# file are completely unaffected by this -- run `python app.py` from
+# the ORIGINAL venv exactly as before; both processes read and write
+# the same database/examguard.db on disk, just from two isolated
+# Python environments.
+
+streamlit==1.62.0
+pandas==2.3.1
+matplotlib==3.11.1
+scikit-learn==1.8.0

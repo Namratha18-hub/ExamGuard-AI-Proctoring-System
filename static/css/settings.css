@@ -1,0 +1,290 @@
+body{
+
+background:#eef4ff;
+font-family:Arial,Helvetica,sans-serif;
+
+}
+
+.settings-page{
+
+width:90%;
+max-width:700px;
+margin:auto;
+padding:40px 30px 30px;
+
+}
+
+.page-header{
+
+margin-bottom:30px;
+
+}
+
+.page-header h1{
+
+display:flex;
+align-items:center;
+gap:12px;
+color:#2563eb;
+font-size:clamp(22px,2.6vw,28px);
+font-weight:700;
+margin:0 0 6px;
+
+}
+
+.page-header h1 i{
+
+font-size:26px;
+
+}
+
+.page-header p{
+
+color:#64748b;
+font-size:14px;
+margin:0;
+
+}
+
+.settings-flash-messages{
+
+margin-bottom:20px;
+
+}
+
+.flash-message{
+
+padding:12px 18px;
+border-radius:10px;
+font-size:14px;
+font-weight:600;
+margin-bottom:10px;
+
+}
+
+.flash-success{
+
+background:#dcfce7;
+color:#166534;
+
+}
+
+.flash-error{
+
+background:#fee2e2;
+color:#991b1b;
+
+}
+
+
+/* =====================================
+   SETTINGS CARDS
+===================================== */
+
+.settings-card{
+
+background:white;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+padding:28px 32px;
+margin-bottom:24px;
+
+}
+
+.settings-card-heading{
+
+display:flex;
+align-items:center;
+gap:10px;
+margin:0 0 6px;
+font-size:16px;
+font-weight:700;
+color:#0f172a;
+
+}
+
+.settings-card-heading i{
+
+color:#2563eb;
+font-size:17px;
+
+}
+
+.settings-card-subtext{
+
+color:#64748b;
+font-size:13px;
+margin:0 0 20px;
+
+}
+
+
+/* Account overview */
+
+.account-overview{
+
+display:flex;
+flex-direction:column;
+gap:14px;
+margin:20px 0;
+
+}
+
+.account-item{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding-bottom:14px;
+border-bottom:1px solid #f1f5f9;
+
+}
+
+.account-label{
+
+font-size:12px;
+font-weight:600;
+color:#64748b;
+text-transform:uppercase;
+letter-spacing:.5px;
+
+}
+
+.account-value{
+
+font-size:15px;
+font-weight:600;
+color:#0f172a;
+
+}
+
+.settings-link{
+
+display:inline-flex;
+align-items:center;
+gap:2px;
+color:#2563eb;
+font-size:13px;
+font-weight:600;
+text-decoration:none;
+
+}
+
+.settings-link:hover{
+
+text-decoration:underline;
+
+}
+
+.settings-link i{
+
+font-size:18px;
+
+}
+
+
+/* Change password form */
+
+.password-form{
+
+display:flex;
+flex-direction:column;
+gap:16px;
+margin-top:20px;
+
+}
+
+.form-field{
+
+display:flex;
+flex-direction:column;
+gap:6px;
+
+}
+
+.form-field label{
+
+font-size:13px;
+font-weight:600;
+color:#334155;
+
+}
+
+.form-field input{
+
+padding:10px 12px;
+border:1.5px solid #cbd5e1;
+border-radius:8px;
+font-size:14px;
+font-family:inherit;
+color:#0f172a;
+
+}
+
+.form-field input:focus{
+
+outline:none;
+border-color:#2563eb;
+
+}
+
+.update-password-btn{
+
+align-self:flex-start;
+display:inline-flex;
+align-items:center;
+gap:8px;
+margin-top:6px;
+padding:10px 22px;
+border:none;
+border-radius:20px;
+background:#2563eb;
+color:white;
+font-size:14px;
+font-weight:600;
+cursor:pointer;
+transition:.2s;
+
+}
+
+.update-password-btn:hover{
+
+background:#1d4ed8;
+
+}
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width:768px){
+
+    .settings-page{
+
+    padding:24px 16px;
+
+    }
+
+    .settings-card{
+
+    padding:24px 20px;
+
+    }
+
+    .account-item{
+
+    flex-direction:column;
+    align-items:flex-start;
+    gap:4px;
+
+    }
+
+    .update-password-btn{
+
+    align-self:stretch;
+    justify-content:center;
+
+    }
+
+}

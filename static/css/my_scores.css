@@ -1,0 +1,196 @@
+body{
+
+background:#eef4ff;
+font-family:Arial,Helvetica,sans-serif;
+
+}
+
+.my-scores{
+
+width:90%;
+margin:auto;
+padding:40px 30px 30px;
+
+}
+
+.page-header{
+
+margin-bottom:30px;
+
+}
+
+.page-header h1{
+
+display:flex;
+align-items:center;
+gap:12px;
+color:#2563eb;
+font-size:clamp(22px,2.6vw,28px);
+font-weight:700;
+margin:0 0 6px;
+
+}
+
+.page-header h1 i{
+
+font-size:26px;
+
+}
+
+.page-header p{
+
+color:#64748b;
+font-size:14px;
+margin:0;
+
+}
+
+.scores-table-wrapper{
+
+background:white;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+padding:10px;
+overflow-x:auto;
+
+}
+
+.scores-table{
+
+width:100%;
+border-collapse:collapse;
+min-width:600px;
+
+}
+
+.scores-table thead tr{
+
+border-bottom:2px solid #eef4ff;
+
+}
+
+.scores-table th{
+
+text-align:left;
+padding:16px 18px;
+font-size:13px;
+font-weight:700;
+color:#64748b;
+text-transform:uppercase;
+letter-spacing:.5px;
+
+}
+
+.scores-table td{
+
+padding:16px 18px;
+font-size:15px;
+color:#0f172a;
+border-bottom:1px solid #f1f5f9;
+
+}
+
+.scores-table tbody tr:last-child td{
+
+border-bottom:none;
+
+}
+
+.scores-table tbody tr:hover{
+
+background:#f8fafc;
+
+}
+
+.scores-table td.exam-name{
+
+font-weight:600;
+
+}
+
+.status-badge{
+
+display:inline-flex;
+align-items:center;
+padding:6px 14px;
+border-radius:20px;
+font-size:13px;
+font-weight:600;
+white-space:nowrap;
+
+}
+
+.status-badge.status-completed{
+
+background:#dcfce7;
+color:#16a34a;
+
+}
+
+.no-scores{
+
+background:white;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+padding:60px 30px;
+text-align:center;
+
+}
+
+.no-scores i{
+
+font-size:48px;
+color:#94a3b8;
+margin-bottom:16px;
+display:block;
+
+}
+
+.no-scores p{
+
+color:#64748b;
+font-size:16px;
+margin-bottom:20px;
+
+}
+
+.start-btn{
+
+display:inline-block;
+padding:10px 24px;
+background:#2563eb;
+color:white;
+text-decoration:none;
+border-radius:8px;
+font-weight:600;
+transition:.2s;
+
+}
+
+.start-btn:hover{
+
+background:#1d4ed8;
+color:white;
+
+}
+
+
+/* =====================================
+   RESPONSIVE
+===================================== */
+
+@media (max-width:768px){
+
+    .my-scores{
+
+    padding:24px 16px;
+
+    }
+
+    .scores-table{
+
+    min-width:520px;
+
+    }
+
+}

@@ -1,0 +1,264 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Profile | ExamGuard AI
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-page">
+
+    <div class="page-header">
+
+        <h1>
+            <i class="bi bi-person-circle"></i>
+            Profile
+        </h1>
+
+        <p>
+            Your registered candidate details.
+        </p>
+
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="profile-flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="profile-header-card">
+
+        <div class="avatar-section">
+
+            {% if profile.photo_path %}
+                <img
+                    id="currentAvatar"
+                    src="{{ url_for('static', filename=profile.photo_path) }}"
+                    alt="Profile picture"
+                    class="avatar-photo">
+            {% else %}
+                <div id="currentAvatar" class="avatar-placeholder">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+            {% endif %}
+
+            <img
+                id="avatarPreview"
+                class="avatar-photo"
+                alt="Selected picture preview"
+                style="display:none;">
+
+            <form
+                action="{{ url_for('upload_profile_picture') }}"
+                method="POST"
+                enctype="multipart/form-data"
+                class="avatar-upload-form">
+
+                <label for="profilePictureInput" class="upload-btn">
+                    <i class="bi bi-camera-fill"></i>
+                    {% if profile.photo_path %}
+                        Change Profile Picture
+                    {% else %}
+                        Upload Profile Picture
+                    {% endif %}
+                </label>
+
+                <input
+                    type="file"
+                    name="profile_picture"
+                    id="profilePictureInput"
+                    accept=".jpg,.jpeg,.png"
+                    hidden>
+
+                <button
+                    type="submit"
+                    id="savePictureBtn"
+                    class="save-picture-btn"
+                    style="display:none;">
+                    <i class="bi bi-check-lg"></i>
+                    Save Picture
+                </button>
+
+                <p
+                    id="uploadClientError"
+                    class="flash-message flash-error"
+                    style="display:none;">
+                </p>
+
+            </form>
+
+            {% if profile.photo_path %}
+                <form
+                    action="{{ url_for('remove_profile_picture') }}"
+                    method="POST"
+                    class="avatar-remove-form"
+                    onsubmit="return confirm('Remove your profile picture?');">
+
+                    <button type="submit" class="remove-btn">
+                        <i class="bi bi-trash-fill"></i>
+                        Remove Profile Picture
+                    </button>
+
+                </form>
+            {% endif %}
+
+        </div>
+
+        <div class="profile-header-info">
+
+            <h2>{{ profile.fullname }}</h2>
+
+            <p class="profile-email">
+                <i class="bi bi-envelope-fill"></i>
+                {{ profile.email }}
+            </p>
+
+            <span class="application-id-badge">
+                {{ profile.application_id }}
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="profile-details-card" id="profileDetailsCard">
+
+        <div class="details-card-header">
+
+            <h3 class="details-heading">
+                Candidate Details
+            </h3>
+
+            <div class="header-actions">
+
+                <button
+                    type="button"
+                    id="editProfileBtn"
+                    class="edit-profile-btn">
+                    <i class="bi bi-pencil-fill"></i>
+                    Edit Profile
+                </button>
+
+                <button
+                    type="submit"
+                    form="profileEditForm"
+                    class="save-changes-btn">
+                    <i class="bi bi-check-lg"></i>
+                    Save Changes
+                </button>
+
+                <button
+                    type="button"
+                    id="cancelEditBtn"
+                    class="cancel-edit-btn">
+                    Cancel
+                </button>
+
+            </div>
+
+        </div>
+
+        <form
+            id="profileEditForm"
+            action="{{ url_for('update_profile') }}"
+            method="POST">
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        <i class="bi bi-person-fill"></i>
+                        Full Name
+                    </span>
+                    <span class="detail-value editable">{{ profile.fullname }}</span>
+                    <input
+                        type="text"
+                        name="fullname"
+                        class="detail-input"
+                        value="{{ profile.fullname }}"
+                        required>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        <i class="bi bi-envelope-fill"></i>
+                        Email
+                    </span>
+                    <span class="detail-value">{{ profile.email }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        <i class="bi bi-telephone-fill"></i>
+                        Mobile
+                    </span>
+                    <span class="detail-value editable">{{ profile.mobile }}</span>
+                    <input
+                        type="text"
+                        name="mobile"
+                        class="detail-input"
+                        value="{{ profile.mobile }}"
+                        required>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        <i class="bi bi-building"></i>
+                        College
+                    </span>
+                    <span class="detail-value editable">{{ profile.college }}</span>
+                    <input
+                        type="text"
+                        name="college"
+                        class="detail-input"
+                        value="{{ profile.college }}"
+                        required>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        <i class="bi bi-hash"></i>
+                        Roll Number
+                    </span>
+                    <span class="detail-value">{{ profile.rollnumber }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">
+                        <i class="bi bi-mortarboard-fill"></i>
+                        Department
+                    </span>
+                    <span class="detail-value editable">{{ profile.department }}</span>
+                    <input
+                        type="text"
+                        name="department"
+                        class="detail-input"
+                        value="{{ profile.department }}"
+                        required>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}

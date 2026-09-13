@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | ExamGuard AI</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0b1526;
+            color: white;
+        }
+
+        /* -------- NAVBAR -------- */
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 48px;
+            background: #0f1b2e;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 20px;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .navbar-links a {
+            color: #dbe6f5;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .navbar-links a:hover {
+            color: #60a5fa;
+        }
+
+        /* -------- PAGE LAYOUT -------- */
+
+        .page-wrap {
+            min-height: calc(100vh - 68px);
+            display: flex;
+            flex-wrap: wrap;
+
+            background:
+                radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.25) 0%, transparent 45%),
+                linear-gradient(135deg, #0b1526, #16233d);
+        }
+
+        .form-panel {
+            flex: 1 1 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 32px;
+        }
+
+        .info-panel {
+            flex: 1 1 480px;
+            padding: 64px 56px;
+        }
+
+        /* -------- LOGIN CARD -------- */
+
+        .login-card {
+            width: 460px;
+            max-width: 100%;
+
+            background: rgba(19, 33, 55, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 40px 38px;
+
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+        }
+
+        .brand-title {
+            text-align: center;
+            font-weight: 800;
+            font-size: 28px;
+            margin: 0;
+        }
+
+        .brand-title .accent {
+            color: #38bdf8;
+        }
+
+        .brand-subtitle {
+            text-align: center;
+            color: #9fb3cc;
+            font-size: 13px;
+            margin: 4px 0 22px;
+        }
+
+        .welcome-heading {
+            text-align: center;
+            font-weight: 800;
+            font-size: 22px;
+            margin: 0 0 8px;
+        }
+
+        .welcome-text {
+            text-align: center;
+            color: #a9bdd6;
+            font-size: 13.5px;
+            line-height: 1.5;
+            margin: 0 0 24px;
+        }
+
+        /* -------- TAB TOGGLE -------- */
+
+        .tab-toggle {
+            display: flex;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 18px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 11px 0;
+            font-weight: 700;
+            font-size: 14px;
+            color: #a9bdd6;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #0d1b2e;
+        }
+
+        .tab-btn:last-child.active {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: white;
+        }
+
+        .tab-btn i {
+            margin-right: 6px;
+        }
+
+        /* -------- PANELS -------- */
+
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .field-label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #dbe6f5;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .field-wrap {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .field-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #60a5fa;
+            font-size: 15px;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            border-radius: 9px;
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            font-size: 14.5px;
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            transition: border-color 0.15s ease, background 0.15s ease;
+        }
+
+        .field-input::placeholder {
+            color: #7d92ad;
+        }
+
+        .field-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            color: white;
+            cursor: pointer;
+            margin-top: 4px;
+            transition: transform 0.12s ease;
+        }
+
+        .submit-btn:active {
+            transform: translateY(1px);
+        }
+
+        .submit-btn.student {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            box-shadow: 0 10px 22px rgba(59, 130, 246, 0.35);
+        }
+
+        .submit-btn.admin {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            box-shadow: 0 10px 22px rgba(15, 23, 42, 0.45);
+        }
+
+        .helper-link {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13px;
+            color: #a9bdd6;
+        }
+
+        .helper-link a {
+            color: #60a5fa;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .helper-link a:hover {
+            text-decoration: underline;
+        }
+
+        .flash-msg {
+            background: rgba(248, 113, 113, 0.12);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            color: #f87171;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* -------- INFO PANEL (right side, mirrors register.html) -------- */
+
+        .info-eyebrow {
+            color: #38bdf8;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.6px;
+            margin-bottom: 10px;
+        }
+
+        .info-heading {
+            font-size: 38px;
+            font-weight: 800;
+            line-height: 1.15;
+            margin: 0 0 20px;
+        }
+
+        .info-text {
+            color: #b6c5da;
+            font-size: 15px;
+            line-height: 1.6;
+            max-width: 480px;
+            margin-bottom: 32px;
+        }
+
+        .feature-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 14px;
+            max-width: 480px;
+        }
+
+        .feature-icon {
+            font-size: 22px;
+            color: #38bdf8;
+            flex-shrink: 0;
+        }
+
+        .feature-title {
+            font-weight: 700;
+            font-size: 15px;
+            margin: 0 0 2px;
+        }
+
+        .feature-sub {
+            color: #8fa3bd;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        @media (max-width: 900px) {
+            .info-panel {
+                display: none;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<!-- NAVBAR (mirrors register.html) -->
+<div class="navbar">
+
+    <div class="navbar-brand">
+        <i class="bi bi-shield-lock-fill" style="color:#38bdf8;"></i>
+        ExamGuard AI
+    </div>
+
+    <div class="navbar-links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('register') }}">Register</a>
+        <a href="{{ url_for('login') }}">Login</a>
+    </div>
+
+</div>
+
+<div class="page-wrap">
+
+    <!-- LEFT: LOGIN FORM -->
+    <div class="form-panel">
+
+        <div class="login-card">
+
+            <h1 class="brand-title">Exam<span class="accent">Guard</span> AI</h1>
+            <p class="brand-subtitle">Secure AI Powered Examination Platform</p>
+
+            <h2 class="welcome-heading">Welcome Back</h2>
+            <p class="welcome-text">
+                Login using your Application ID and Password to securely
+                access your examination dashboard.
+            </p>
+
+            <!-- FLASH MESSAGE (shared across both tabs) -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="flash-msg">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- TAB TOGGLE -->
+            <div class="tab-toggle">
+                <button type="button" class="tab-btn" id="studentTabBtn" onclick="showTab('student')">
+                    <i class="bi bi-mortarboard-fill"></i>Student Login
+                </button>
+                <button type="button" class="tab-btn" id="adminTabBtn" onclick="showTab('admin')">
+                    <i class="bi bi-shield-fill"></i>Admin Login
+                </button>
+            </div>
+
+            <!-- ==================== STUDENT LOGIN ==================== -->
+            <div class="panel" id="studentPanel">
+
+                <form method="POST" action="{{ url_for('login') }}">
+
+                    <label class="field-label">Application ID</label>
+                    <div class="field-wrap">
+                        <i class="bi bi-person-vcard-fill"></i>
+                        <input
+                            type="text"
+                            name="application_id"
+                            class="field-input"
+                            placeholder="e.g. EG20260007"
+                            autocomplete="username"
+                            required>
+                    </div>
+
+                    <label class="field-label">Password</label>
+                    <div class="field-wrap">
+                        <i class="bi bi-lock-fill"></i>
+                        <input
+                            type="password"
+                            name="password"
+                            class="field-input"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+                    </div>
+
+                    <button type="submit" class="submit-btn student">
+                        <i class="bi bi-box-arrow-in-right"></i> Login
+                    </button>
+
+                </form>
+
+                <div class="helper-link">
+                    Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+                </div>
+
+            </div>
+
+            <!-- ==================== ADMIN LOGIN ==================== -->
+            <div class="panel" id="adminPanel">
+
+                <form method="POST" action="{{ url_for('admin_login') }}">
+
+                    <label class="field-label">Admin Username</label>
+                    <div class="field-wrap">
+                        <i class="bi bi-person-badge-fill"></i>
+                        <input
+                            type="text"
+                            name="username"
+                            class="field-input"
+                            placeholder="Enter admin username"
+                            autocomplete="username"
+                            required>
+                    </div>
+
+                    <label class="field-label">Admin Password</label>
+                    <div class="field-wrap">
+                        <i class="bi bi-lock-fill"></i>
+                        <input
+                            type="password"
+                            name="password"
+                            class="field-input"
+                            placeholder="Enter admin password"
+                            autocomplete="current-password"
+                            required>
+                    </div>
+
+                    <button type="submit" class="submit-btn admin">
+                        <i class="bi bi-shield-lock-fill"></i> Admin Login
+                    </button>
+
+                </form>
+
+                <div class="helper-link">
+                    Administrator access only
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT: INFO PANEL (mirrors register.html) -->
+    <div class="info-panel">
+
+        <p class="info-eyebrow">AI POWERED SECURITY</p>
+
+        <h2 class="info-heading">
+            Intelligent Examination Monitoring
+        </h2>
+
+        <p class="info-text">
+            Advanced AI, OpenCV face recognition, secure authentication
+            and real-time monitoring for reliable online examinations.
+        </p>
+
+        <div class="feature-card">
+            <i class="bi bi-person-check-fill feature-icon"></i>
+            <div>
+                <p class="feature-title">Face Verification</p>
+                <p class="feature-sub">AI Identity Authentication</p>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <i class="bi bi-camera-video-fill feature-icon"></i>
+            <div>
+                <p class="feature-title">OpenCV Monitoring</p>
+                <p class="feature-sub">Live Camera Tracking</p>
+            </div>
+        </div>
+
+        <div class="feature-card">
+            <i class="bi bi-hdd-stack-fill feature-icon"></i>
+            <div>
+                <p class="feature-title">Secure Database</p>
+                <p class="feature-sub">Encrypted Candidate Records</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+    function showTab(tab) {
+
+        document.getElementById('studentPanel').classList.toggle('active', tab === 'student');
+        document.getElementById('adminPanel').classList.toggle('active', tab === 'admin');
+
+        document.getElementById('studentTabBtn').classList.toggle('active', tab === 'student');
+        document.getElementById('adminTabBtn').classList.toggle('active', tab === 'admin');
+
+    }
+
+    // Default tab: admin only if ?tab=admin is in the URL; otherwise student.
+    const initialTab =
+        new URLSearchParams(window.location.search).get('tab') === 'admin'
+            ? 'admin'
+            : 'student';
+
+    showTab(initialTab);
+
+</script>
+
+</body>
+
+</html>

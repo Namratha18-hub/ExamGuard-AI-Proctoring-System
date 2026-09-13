@@ -1,0 +1,941 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+Create Candidate Account | ExamGuard AI
+{% endblock %}
+
+
+
+{% block styles %}
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/register.css') }}">
+
+{% endblock %}
+
+
+
+
+
+{% block content %}
+
+
+<section class="register-page">
+
+
+<div class="register-wrapper">
+
+
+
+<!-- ================= LEFT FORM ================= -->
+
+
+<div class="register-card">
+
+
+
+<div class="brand">
+
+
+<h1>
+Exam<span>Guard</span> AI
+</h1>
+
+
+<p>
+Secure AI Powered Examination Platform
+</p>
+
+
+</div>
+
+
+
+
+<h2>
+Create Your 
+<span>
+Candidate Account
+</span>
+</h2>
+
+
+
+<p class="subtitle">
+
+Register securely with AI identity verification,
+face authentication and encrypted examination access.
+
+</p>
+
+
+
+
+<form action="/register" method="POST" enctype="multipart/form-data" autocomplete="off">
+
+
+
+<div class="form-grid">
+
+
+
+
+
+<!-- FULL NAME -->
+
+<div class="form-group">
+
+<label>
+Full Name
+</label>
+
+
+<input
+type="text"
+class="form-control"
+name="fullname"
+placeholder="Enter full name"
+required>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- EMAIL -->
+
+
+<div class="form-group">
+
+
+<label>
+Email Address
+</label>
+
+
+<input
+
+type="email"
+
+id="email"
+
+class="form-control"
+
+name="email"
+
+placeholder="example@gmail.com"
+
+pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+
+autocomplete="new-email"
+
+autocorrect="off"
+
+autocapitalize="off"
+
+spellcheck="false"
+
+required>
+
+
+<small id="emailError"></small>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- MOBILE -->
+
+
+<div class="form-group">
+
+
+<label>
+Mobile Number
+</label>
+
+
+<input
+
+type="tel"
+
+class="form-control"
+
+name="mobile"
+
+pattern="[6-9]{1}[0-9]{9}"
+
+maxlength="10"
+
+placeholder="9876543210"
+
+autocomplete="new-mobile"
+
+required>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- COLLEGE -->
+
+
+<div class="form-group">
+
+
+<label>
+College Name
+</label>
+
+
+<input
+
+type="text"
+
+class="form-control"
+
+name="college"
+
+placeholder="Enter college name"
+
+required>
+
+
+</div>
+
+
+
+
+
+
+
+<!-- ROLL -->
+
+
+<div class="form-group">
+
+
+<label>
+Roll Number
+</label>
+
+
+<input
+
+type="text"
+
+class="form-control"
+
+name="rollnumber"
+
+placeholder="Enter roll number"
+
+required>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- DEPARTMENT -->
+
+
+<div class="form-group">
+
+
+<label>
+Department / Branch
+</label>
+
+
+
+<select
+
+class="form-select"
+
+id="department"
+
+name="department"
+
+onchange="showOtherBranch()"
+
+required>
+
+
+
+<option value="">
+Select Branch
+</option>
+
+
+<option>
+Computer Science Engineering (CSE)
+</option>
+
+
+<option>
+Artificial Intelligence and Machine Learning (AI & ML)
+</option>
+
+
+<option>
+Information Technology (IT)
+</option>
+
+
+<option>
+Electronics and Communication Engineering (ECE)
+</option>
+
+
+<option>
+Electrical and Electronics Engineering (EEE)
+</option>
+
+
+<option>
+Mechanical Engineering
+</option>
+
+
+<option>
+Civil Engineering
+</option>
+
+
+<option>
+Data Science
+</option>
+
+
+<option>
+Cyber Security
+</option>
+
+
+<option>
+Aerospace Engineering
+</option>
+
+
+<option>
+Biotechnology
+</option>
+
+
+<option value="Others">
+Others
+</option>
+
+
+</select>
+
+
+
+<input
+
+type="text"
+
+id="otherBranch"
+
+name="otherBranch"
+
+class="form-control mt-3"
+
+placeholder="Enter your branch"
+
+style="display:none;">
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- PASSWORD -->
+
+
+<div class="form-group">
+
+
+<label>
+Password
+</label>
+
+
+<div class="password-box">
+
+
+<input
+
+type="password"
+
+id="password"
+
+class="form-control"
+
+name="password"
+
+placeholder="Create strong password"
+
+autocomplete="new-password"
+
+required>
+
+
+
+<button
+
+type="button"
+
+class="eye-btn"
+
+onclick="togglePassword('password',this)">
+
+
+
+<i class="bi bi-eye"></i>
+
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+<div class="password-strength">
+
+
+<div id="strengthBar"></div>
+
+
+</div>
+
+
+<span id="strengthText">
+Weak
+</span>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- CONFIRM PASSWORD -->
+
+
+<div class="form-group">
+
+
+<label>
+Confirm Password
+</label>
+
+
+
+<div class="password-box">
+
+
+
+<input
+
+type="password"
+
+id="confirmPassword"
+
+class="form-control"
+
+name="confirmPassword"
+
+placeholder="Confirm password"
+
+autocomplete="new-password"
+
+required>
+
+
+
+
+<button
+
+type="button"
+
+class="eye-btn"
+
+onclick="togglePassword('confirmPassword',this)">
+
+
+
+<i class="bi bi-eye"></i>
+
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- FACE VERIFICATION -->
+
+
+<div class="verification-box">
+
+
+<h4>
+
+<i class="bi bi-camera-fill"></i>
+
+AI Face Verification
+
+</h4>
+
+
+<p>
+
+Capture your face using OpenCV before examination.
+
+</p>
+
+
+<button 
+type="button"
+id="openCamera"
+class="btn btn-primary-custom">
+
+<i class="bi bi-camera-fill"></i>
+Open Camera
+
+</button>
+<div id="cameraBox" style="display:none;">
+
+    <h5 class="text-center mt-3">
+        AI Face Verification
+    </h5>
+
+    <!-- Live Camera -->
+    <img
+        id="video"
+        src="{{ url_for('video_feed') }}"
+        width="350"
+        height="250"
+        class="rounded"
+    >
+
+    <!-- Clean Face-Capture Status (registration only) -->
+    <p id="faceStatusText" class="face-status-text">
+        Position your face clearly
+    </p>
+
+    <br>
+
+    <button
+        type="button"
+        id="captureFace"
+        class="btn btn-success mt-3 capture-btn">
+
+        Capture Face
+
+    </button>
+
+    <span
+        id="captureSuccessBadge"
+        class="capture-success-badge"
+        style="display:none;">
+
+        <i class="bi bi-check-circle-fill"></i>
+
+    </span>
+
+    <!-- Inline Status Message (success / error) -->
+    <div id="captureMessage" class="capture-message" style="display:none;"></div>
+
+    <!-- Captured Image -->
+    <br><br>
+
+    <img
+        id="capturedImage"
+        src=""
+        style="
+        display:none;
+        width:350px;
+        border-radius:10px;
+        border:3px solid #22c55e;
+        ">
+
+</div>
+
+<input
+type="hidden"
+name="face_image"
+id="face_image">
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- APPLICATION ID -->
+
+
+<div class="application-box">
+
+
+<h5>
+Your Application ID
+</h5>
+
+
+<h2 id="applicationId">
+Generating...
+</h2>
+
+
+<p>
+Generated automatically after successful registration
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- TERMS -->
+
+
+<div class="terms">
+
+
+<input
+
+type="checkbox"
+
+required>
+
+
+<label>
+
+I agree to the 
+
+<a href="#">
+Terms & Conditions
+</a>
+
+and
+
+<a href="#">
+Privacy Policy
+</a>
+
+
+</label>
+
+
+</div>
+
+
+<button
+
+class="register-btn">
+
+
+<i class="bi bi-shield-check"></i>
+
+
+Create Secure Account
+
+
+</button>
+
+
+
+
+</form>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- ================= RIGHT PANEL ================= -->
+
+
+
+<div class="security-panel">
+
+
+
+<span>
+AI POWERED SECURITY
+</span>
+
+
+
+
+<h1>
+
+Intelligent Examination
+<br>
+Monitoring
+
+</h1>
+
+
+
+<p>
+
+Advanced AI, OpenCV face recognition,
+secure authentication and real-time monitoring
+for reliable online examinations.
+
+</p>
+
+
+
+
+
+
+
+
+
+<div class="security-box">
+
+
+<i class="bi bi-person-check"></i>
+
+
+<div>
+
+<h4>
+Face Verification
+</h4>
+
+<p>
+AI Identity Authentication
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="security-box">
+
+
+<i class="bi bi-camera"></i>
+
+
+<div>
+
+<h4>
+OpenCV Monitoring
+</h4>
+
+
+<p>
+Live Camera Tracking
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+<div class="security-box">
+
+
+<i class="bi bi-database-lock"></i>
+
+
+<div>
+
+
+<h4>
+Secure Database
+</h4>
+
+
+<p>
+Encrypted Candidate Records
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="stats">
+
+
+<div>
+
+<h2>
+10K+
+</h2>
+
+
+<p>
+Candidates
+</p>
+
+
+</div>
+
+
+
+
+
+<div>
+
+<h2>
+99.9%
+</h2>
+
+
+<p>
+Accuracy
+</p>
+
+
+</div>
+
+
+
+
+
+
+
+<div>
+
+<h2>
+256-bit
+</h2>
+
+
+<p>
+Encryption
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+</section>
+
+<script src="{{ url_for('static', filename='js/register.js') }}"></script>
+
+
+{% endblock %}

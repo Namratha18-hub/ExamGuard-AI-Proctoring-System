@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}
+AI Face Verification | ExamGuard AI
+{% endblock %}
+{% block styles %}
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/camera.css') }}">
+
+{% endblock %}
+{% block content %}
+
+<section class="camera-page">
+
+    <div class="container">
+
+        <div class="camera-card">
+
+            <h2>
+                AI Face Verification
+            </h2>
+
+            <p>
+                Please look straight into the camera.
+            </p>
+
+            <div class="camera-box">
+
+                <img
+                    src="{{ url_for('video_feed') }}"
+                    id="cameraFeed"
+                    alt="Camera Feed">
+
+            </div>
+
+            <div class="status-box">
+
+                <h5>Status</h5>
+
+                <p id="statusText">
+
+                    Initializing Camera...
+
+                </p>
+
+            </div>
+
+            <div class="warning-box">
+
+                <ul id="warningList">
+
+                    <li>Waiting for face...</li>
+
+                </ul>
+
+            </div>
+
+            <button
+                id="captureBtn"
+                class="btn btn-success">
+
+                Capture Face
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+<script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+
+{% endblock %}

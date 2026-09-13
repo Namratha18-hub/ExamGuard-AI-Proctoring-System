@@ -1,0 +1,125 @@
+{% extends "dashboard_base.html" %}
+
+{% block title %}
+Settings | ExamGuard AI
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/settings.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="settings-page">
+
+    <div class="page-header">
+
+        <h1>
+            <i class="bi bi-gear-fill"></i>
+            Settings
+        </h1>
+
+        <p>
+            Manage your account and security preferences.
+        </p>
+
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="settings-flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="settings-card">
+
+        <h3 class="settings-card-heading">
+            <i class="bi bi-person-vcard-fill"></i>
+            Account
+        </h3>
+
+        <div class="account-overview">
+
+            <div class="account-item">
+                <span class="account-label">Application ID</span>
+                <span class="account-value">{{ account.application_id }}</span>
+            </div>
+
+            <div class="account-item">
+                <span class="account-label">Email</span>
+                <span class="account-value">{{ account.email }}</span>
+            </div>
+
+        </div>
+
+        <a href="{{ url_for('profile') }}" class="settings-link">
+            <i class="bi bi-arrow-right-short"></i>
+            Edit personal details on your Profile page
+        </a>
+
+    </div>
+
+    <div class="settings-card">
+
+        <h3 class="settings-card-heading">
+            <i class="bi bi-shield-lock-fill"></i>
+            Change Password
+        </h3>
+
+        <p class="settings-card-subtext">
+            Choose a strong password you don't use elsewhere.
+        </p>
+
+        <form
+            action="{{ url_for('change_password') }}"
+            method="POST"
+            class="password-form">
+
+            <div class="form-field">
+                <label for="current_password">Current Password</label>
+                <input
+                    type="password"
+                    id="current_password"
+                    name="current_password"
+                    required>
+            </div>
+
+            <div class="form-field">
+                <label for="new_password">New Password</label>
+                <input
+                    type="password"
+                    id="new_password"
+                    name="new_password"
+                    minlength="6"
+                    required>
+            </div>
+
+            <div class="form-field">
+                <label for="confirm_password">Confirm New Password</label>
+                <input
+                    type="password"
+                    id="confirm_password"
+                    name="confirm_password"
+                    minlength="6"
+                    required>
+            </div>
+
+            <button type="submit" class="update-password-btn">
+                <i class="bi bi-check-lg"></i>
+                Update Password
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

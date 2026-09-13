@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Instructions{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+<div class="card shadow-lg p-5">
+
+<h2 class="text-center">
+
+{{ course|upper }} Examination
+
+</h2>
+
+<hr>
+
+<h4>Instructions</h4>
+
+<ul>
+
+<li>Exam duration is fixed.</li>
+
+<li>Do not switch tabs.</li>
+
+<li>Camera must remain ON.</li>
+
+<li>No mobile phones allowed.</li>
+
+<li>No multiple persons allowed.</li>
+
+<li>Face should always be visible.</li>
+
+<li>AI Proctoring is enabled.</li>
+
+<li>Repeated violations may terminate the exam.</li>
+
+</ul>
+
+<div class="text-center mt-4">
+
+<a href="{{ url_for('exam',course=course) }}"
+class="btn btn-success btn-lg">
+
+I Agree & Start Exam
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

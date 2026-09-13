@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Exam Submitted</title>
+
+<style>
+
+body{
+    margin:0;
+    padding:0;
+    background:#eef2f7;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+.container{
+
+    width:100%;
+    min-height:100vh;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    padding:40px 20px;
+    box-sizing:border-box;
+
+}
+
+.card{
+
+    width:500px;
+    background:white;
+    padding:40px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+    text-align:center;
+
+}
+
+.success{
+
+    font-size:80px;
+    color:#28a745;
+
+}
+
+h2{
+
+    color:#28a745;
+    margin-top:10px;
+
+}
+
+p{
+
+    color:#555;
+    font-size:18px;
+
+}
+
+button{
+
+    margin-top:30px;
+    padding:15px 35px;
+
+    background:#007BFF;
+    color:white;
+
+    border:none;
+    border-radius:8px;
+
+    font-size:18px;
+    cursor:pointer;
+
+}
+
+button:hover{
+
+    background:#0056b3;
+
+}
+
+/* -----------------------------------
+   QUESTION-BY-QUESTION REVIEW
+   ----------------------------------- */
+
+.review-wrapper{
+
+    width:700px;
+    max-width:92vw;
+    margin:30px auto 0 auto;
+    text-align:left;
+
+}
+
+.review-heading{
+
+    color:#333;
+    text-align:center;
+    margin-bottom:20px;
+
+}
+
+.review-card{
+
+    background:white;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+    padding:18px 22px;
+    margin-bottom:14px;
+    border-left:8px solid #999;
+
+}
+
+.review-card.correct{
+
+    border-left-color:#28a745;
+    background:#f1fbf3;
+
+}
+
+.review-card.wrong{
+
+    border-left-color:#dc3545;
+    background:#fdf2f3;
+
+}
+
+.review-card.not_answered{
+
+    border-left-color:#f0ad4e;
+    background:#fef9f0;
+
+}
+
+.review-question-text{
+
+    color:#222;
+    font-size:16px;
+    font-weight:bold;
+    margin:0 0 10px 0;
+
+}
+
+.review-row{
+
+    font-size:15px;
+    margin:4px 0;
+    color:#444;
+
+}
+
+.review-answer-value.correct-text{
+
+    color:#28a745;
+    font-weight:bold;
+
+}
+
+.review-answer-value.wrong-text{
+
+    color:#dc3545;
+    font-weight:bold;
+
+}
+
+.review-answer-value.muted-text{
+
+    color:#888;
+    font-style:italic;
+
+}
+
+.review-status-badge{
+
+    display:inline-block;
+    padding:3px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:bold;
+    color:white;
+    margin-top:8px;
+
+}
+
+.review-status-badge.correct{
+
+    background:#28a745;
+
+}
+
+.review-status-badge.wrong{
+
+    background:#dc3545;
+
+}
+
+.review-status-badge.not_answered{
+
+    background:#f0ad4e;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<div class="success">
+✔
+</div>
+
+<h2>Exam Submitted Successfully</h2>
+
+<p>
+
+Thank you for completing the examination.
+
+</p>
+<h2>Your Score: {{ score }}</h2>
+<p>
+
+Click the button below to view your result dashboard.
+
+</p>
+
+<a href="{{ url_for('dashboard') }}">
+
+<button>
+
+Go to Dashboard
+
+</button>
+
+</a>
+
+</div>
+
+{% if question_results %}
+
+<div class="review-wrapper">
+
+<h2 class="review-heading">
+Answer Review
+</h2>
+
+{% for q in question_results %}
+
+<div class="review-card {{ q.status }}">
+
+<p class="review-question-text">
+Q{{ loop.index }}. {{ q.question_text }}
+</p>
+
+<p class="review-row">
+Your Answer:
+{% if q.candidate_answer %}
+<span class="review-answer-value {% if q.status == 'correct' %}correct-text{% else %}wrong-text{% endif %}">
+{{ q.candidate_answer }}
+</span>
+{% else %}
+<span class="review-answer-value muted-text">
+Not Answered
+</span>
+{% endif %}
+</p>
+
+<p class="review-row">
+Correct Answer:
+<span class="review-answer-value correct-text">
+{{ q.correct_answer }}
+</span>
+</p>
+
+{% if q.status == 'correct' %}
+<span class="review-status-badge correct">Correct</span>
+{% elif q.status == 'wrong' %}
+<span class="review-status-badge wrong">Wrong</span>
+{% else %}
+<span class="review-status-badge not_answered">Not Answered</span>
+{% endif %}
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}
+Registration Successful | ExamGuard AI
+{% endblock %}
+
+{% block content %}
+
+<section class="success-page">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+
+        <h1>Registration Successful!</h1>
+
+        <p>
+            Your candidate account has been created successfully.
+            Please save your Application ID for future reference.
+        </p>
+
+        <div class="application-box">
+
+            <small>Application ID</small>
+
+            <h2>{{ application_id }}</h2>
+
+        </div>
+
+        <div class="success-info">
+
+            <div>
+                <i class="bi bi-shield-check"></i>
+                AI Identity Verification
+            </div>
+
+            <div>
+                <i class="bi bi-database-lock"></i>
+                Secure Database Storage
+            </div>
+
+            <div>
+                <i class="bi bi-person-badge"></i>
+                Candidate Account Created
+            </div>
+
+        </div>
+
+        <a href="/login" class="login-button">
+
+            <i class="bi bi-box-arrow-in-right"></i>
+
+            Continue to Login
+
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

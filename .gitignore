@@ -1,0 +1,9 @@
+﻿venv/
+venv-dashboard/
+__pycache__/
+*.pyc
+.env
+*.env
+
+database.db
+examguard.db
