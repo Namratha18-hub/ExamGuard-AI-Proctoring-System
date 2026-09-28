@@ -82,4 +82,4 @@ The core ExamGuard modules have been implemented and tested. The project include
 
 Author
 
-Revu Siri Harshini
+Sanapala Namratha
