@@ -39,7 +39,7 @@ from werkzeug.utils import secure_filename
 # -----------------------------------
 
 app = Flask(__name__)
-app.secret_key = "examguard_secret"
+app.secret_key = SECRET_KEY
 UPLOAD_FOLDER = "static/photos"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
