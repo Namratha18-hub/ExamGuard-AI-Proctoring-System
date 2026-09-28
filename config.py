@@ -7,7 +7,7 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASE_PATH = os.path.join(BASE_DIR, "database", "examguard.db")
 
 # Flask Secret Key
-SECRET_KEY = "examguard_ai_secret_key_2026"
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 
 # ==================================================================
 # >>> NEW IN PART 12 <
